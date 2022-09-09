@@ -29,25 +29,8 @@ const activity = () => {
 
   //show sent/received, to/from, amount, date
   return (
-    <div className='flex flex-col gap-y-4 px-8'>
+    <div className='flex flex-col flex-1 gap-y-4 px-8 h-full'>
       {state.transactions && state.transactions.map((transaction: Transaction, index: number) => {
-
-        // if (transaction.from == state.user) {
-        //   return (
-        //     <div className='' key={index}>
-        //       {transaction.to}
-        //       {transaction.timeStamp}
-        //     </div>
-        //   );
-        // } else {
-        //   return (
-        //     <div className='' key={index}>
-        //       {transaction.from}
-        //       {transaction.timeStamp}
-        //     </div>
-        //   );
-        // }
-        // const value = BigNumber.from("1000000000000000000")
         // @ts-ignore
         const d = new Date(transaction.timeStamp * 1000);
         const date = d.toLocaleDateString();

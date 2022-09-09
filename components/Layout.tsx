@@ -11,10 +11,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <title>Leap Wallet Clone</title>
           <link rel="icon" href="https://softr-prod.imgix.net/applications/95bf8384-8d1e-46c0-9e2f-d2d8ee183230/assets/5ca7adce-5526-4745-95e6-fa5743c82f25.svg" />
         </Head>
-        <div className="flex w-full flex-1 items-center justify-center">
+        <div className="flex w-full flex-1 items-center justify-center max-h-screen">
           <div className='flex flex-col max-w-sm w-[350px] h-[600px] bg-darkBlueBg rounded-2xl'>
             <Navbar />
-            <main className="h-full">{children}</main>
+            <main className="flex-1 flex flex-col overflow-y-scroll">{children}</main>
             <Footer />
           </div>
         </div>
