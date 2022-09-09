@@ -1,84 +1,78 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useContext, useState } from 'react'
+import { ActionKind, AppContext } from '../context/AppProvider'
+import { connectWallet } from '../utils/ethers'
+
+const styles = {
+  buttons: 'bg-normalBlueBg w-1/2 rounded-lg py-4 text-xs',
+
+}
 
 const Home: NextPage = () => {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+  const { state, dispatch } = useContext(AppContext);
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+  if (!state.user) {
+    return (
+      <div className='flex justify-center items-center px-8'>
+        <button
+          className='text-center w-full bg-greenBg my-4 py-3 rounded-lg text-sm'
+          onClick={async () => {
+            const accounts: any = await connectWallet()
+            if (accounts.length) {
+              dispatch({ type: ActionKind.SET_USER, payload: accounts[0] })
+            }
+          }}
         >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
+          Connect to MetaLeap Wallet
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <div className='mx-6 flex flex-col'>
+      <div className='w-full'>
+        <div className='w-full p-[2px] rounded-lg bg-gradient-to-b from-greenBg to-darkBlueBg'>
+          <div className='w-full flex justify-center items-center gap-x-4 p-6 bg-darkBlueBg rounded-lg'>
+            <Image src="/images/polygon-token.svg" alt="matic token" width={32} height={32} />
+            <h1 className='text-2xl font-bold'>{state?.balance?.substring(0, 4)}</h1>
+          </div>
+        </div>
+        <div className='w-full flex gap-x-4'>
+          <button className={styles.buttons}>Send</button>
+          <button className={styles.buttons}>Deposit</button>
+        </div>
+      </div>
+      <hr className='w-[60%] place-self-center border-darkGrayBg my-4' />
+      <div>
+        <div className='flex w-full justify-between items-center'>
+          <h1 className='text-grayText text-xs'>Hide small balances</h1>
+          <label
+            htmlFor="default-toggle"
+            className="inline-flex relative items-center cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              defaultValue=""
+              id="default-toggle"
+              className="sr-only peer"
+            />
+            <div className="w-10 h-3 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:bg-greenBg after:content-[''] after:absolute after:-top-1 after:bg-lightGrayBg after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-lightGreenBg" />
+          </label>
+        </div>
+        <div className='flex justify-between bg-normalBlueBg px-4 py-6 rounded-lg my-4'>
+          <div className='flex gap-x-4'>
+            <Image src="/images/polygon-token.svg" alt="matic token" width={24} height={24} />
+            <h1>Matic</h1>
+          </div>
+          <h1 className='text-sm font-semibold'>{state?.balance?.substring(0, 5)}</h1>
+        </div>
+        <button className='text-center w-full bg-greenBg my-4 py-3 rounded-lg text-sm'>
+          Manage Tokens
+        </button>
+      </div>
     </div>
   )
 }
