@@ -1,3 +1,9 @@
+# Leap Wallet Clone
+
+## **⚡️** Screenshots
+<img src="./screenshots/comparision.jpeg" alt="Img" style="height:500px"/>
+<img src="./screenshots/transactions.jpeg" alt="Img" style="height:500px"/>
+
 # Next.js + Tailwind CSS Example
 
 This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
